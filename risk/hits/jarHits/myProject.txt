@@ -1,0 +1,25 @@
+myProject
+1.0000-<'cmp'.HandleDictionary: void compareDictionary(java.io.File,java.io.File,java.lang.String,java.lang.String,java.lang.String)>
+0.2361-<'cmp'.HandleSimilarity: float getSimilarityRatio(java.lang.String,java.lang.String)>
+0.1176-<'cmp'.Test: void main(java.lang.String[])>
+0.0903-<'cmp'.Filter: 'cmp'.CmpUnit stringMin('cmp'.CmpUnit)>
+0.0903-<'cmp'.ArrayListBuilder: java.util.ArrayList getArrayList(java.lang.String)>
+0.0903-<'cmp'.Test: 'cmp'.CmpUnit stringMin('cmp'.CmpUnit)>
+0.0005-<'cmp'.Filter: void main(java.lang.String[])>
+0.0003-<'cmp'.ResultFileCmp: void getSpeResult(java.lang.String,java.lang.String,java.lang.String)>
+0.0000-<'cmp'.HandleDictionary: void main(java.lang.String[])>
+0.0000-<'cmp'.Test: boolean isSMCha('cmp'.CmpUnit)>
+0.0000-<'cmp'.Filter: boolean isSMCha('cmp'.CmpUnit)>
+0.0000-<'cmp'.HandleSimilarity: int compare(java.lang.String,java.lang.String)>
+0.0000-<'cmp'.Filter: java.util.ArrayList filte(java.util.ArrayList)>
+0.0000-<'cmp'.Test: void <init>()>
+0.0000-<'cmp'.HandleDictionary: void test(java.util.ArrayList,java.lang.String)>
+0.0000-<'cmp'.HandleSimilarity: void <init>()>
+0.0000-<'cmp'.HandleDictionary: boolean isUpper(java.lang.String)>
+0.0000-<'cmp'.ArrayListBuilder: void <init>()>
+0.0000-<'cmp'.CmpUnit: void <init>(java.lang.String,java.lang.String)>
+0.0000-<'cmp'.ResultFileCmp: void <init>()>
+0.0000-<'cmp'.HandleDictionary: void <init>()>
+0.0000-<'cmp'.Filter: java.util.ArrayList repFilte(java.util.ArrayList)>
+0.0000-<'cmp'.HandleDictionary: boolean isEqual(int,int)>
+0.0000-<'cmp'.HandleSimilarity: int min(int,int,int)>
