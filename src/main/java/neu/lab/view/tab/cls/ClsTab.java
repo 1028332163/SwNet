@@ -19,14 +19,14 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 
-public class ClsPanel extends JSplitPane {
+public class ClsTab extends JSplitPane {
 	Screen screen;
 	ClsDisplay clsDisplay;
 	JScrollPane pckCheckPanel;
 	/**
 	 * Create the panel.
 	 */
-	public ClsPanel(Screen screen) {
+	public ClsTab(Screen screen) {
 		super();
 		this.screen = screen;
 		clsDisplay = new ClsDisplay(screen);

@@ -31,7 +31,7 @@ public class DirLmWriter extends RiskWriter {
 		for (String hostM : SysInfo.hostMthds) {
 			Set<String> outMthds = SysInfo.getMthd(hostM).getOutMthds();
 			Set<String> libOuts = new HashSet<String>();
-			//统计调用外部方法的个数
+			// 统计调用外部方法的个数
 			if (null != outMthds) {
 				for (String outMthd : outMthds) {
 					if (SysUtil.isLibMthd(outMthd)) {
@@ -39,8 +39,9 @@ public class DirLmWriter extends RiskWriter {
 					}
 				}
 			}
-			
+
 			nums.add("" + libOuts.size());
+			graphData.addNum(hostM, libOuts.size());
 			if (libOuts.size() > SysConf.DIR_LM_T) {
 				riskMthds.add(hostM);
 				wrtEachM(hostM, libOuts);
@@ -49,14 +50,14 @@ public class DirLmWriter extends RiskWriter {
 	}
 
 	private void wrtEachM(String hostM, Set<String> libOuts) throws IOException {
-		PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(getWrtFile(dirPath, hostM))));
-		printer.println(hostM);
-		this.wrtHostCall(printer, hostM);
-		printer.println(libOuts.size() + " direct lib-method");
-		for (String libOut : libOuts) {
-			printer.println(libOut);
-		}
-		printer.close();
+//		PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(getWrtFile(dirPath, hostM))));
+//		printer.println(hostM);
+//		this.wrtHostCall(printer, hostM);
+//		printer.println(libOuts.size() + " direct lib-method");
+//		for (String libOut : libOuts) {
+//			printer.println(libOut);
+//		}
+//		printer.close();
 	}
 
 }

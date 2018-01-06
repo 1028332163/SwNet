@@ -18,7 +18,7 @@ import soot.PackManager;
 import soot.Transform;
 
 public class SysProcessor implements Runnable {
-	private static Logger logger = Logger.getRootLogger(); 
+	private static Logger logger = Logger.getRootLogger();
 	String path;
 
 	public SysProcessor(String path) {
@@ -39,8 +39,6 @@ public class SysProcessor implements Runnable {
 	 */
 	public void processSys() {
 		Long startTime = System.currentTimeMillis();
-		if (path == null)
-			path = "D:\\cWsFile\\projectLib\\cmpTest";
 		String srcPath = path + "\\src";
 		String binPath = path + "\\bin";
 
@@ -58,11 +56,13 @@ public class SysProcessor implements Runnable {
 		SysManager.geneClsJarRlts();// 生成类和jar的关系
 
 		SysInfo.hostMthds = SysManager.getInnerMthds();
+
 		SysInfo.books = new MthdDog(SysInfo.hostMthds).findRlt();// 计算host方法的可达方法
 		new WriterChain().invokeAllWrt();
 
 		SysPrinter.printSys();
 		logger.info("system runTime:" + ((System.currentTimeMillis() - startTime) / 1000));
 	}
+
 
 }

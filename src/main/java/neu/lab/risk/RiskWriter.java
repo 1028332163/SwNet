@@ -34,49 +34,33 @@ public abstract class RiskWriter {
 	String dirPath;
 	String numFile;
 	String riskMthdFile;
-	
+
+	RiskGraphData graphData;
 	List<String> nums = new ArrayList<String>();
 	Set<String> riskMthds = new HashSet<String>();
 
-//	String lotLibDir = SysConf.riskOutPath + "lotLib/";
-//	String lotMcPlDir = SysConf.riskOutPath + "lotMcPl/";
-//	String lotInHmDir = SysConf.riskOutPath + "lotInHm/";
-//	String lotDirLmDir = SysConf.riskOutPath + "lotDirLm/";
-//
-//	List<String> libNums = new ArrayList<String>();// host method直接引用的jar包个数
-//	List<String> mcPlNums = new ArrayList<String>();// host Method对被引用的lib引用的方法的个数
-//	List<String> inHmNums = new ArrayList<String>();// lib中的方法被多少个hostMthd调用
-//	List<String> dirLmNums = new ArrayList<String>();
-//
-//	Set<String> lotLibMs = new HashSet<String>();// lots of lib method
-//	Set<String> lotMcPlMs = new HashSet<String>();// lots of method Call per-Lib method
-//	Set<String> lotInHmMs = new HashSet<String>();// lots of in-HostMethod method
-//	Set<String> lotDirLmMs = new HashSet<String>();
-	
+	public RiskWriter() {
+		initType();
+		dirPath = SysConf.riskOutPath + type + "/";
+		numFile = SysConf.staDir + "nums_" + type + ".txt";
+		riskMthdFile = SysConf.staDir + "risk_m_" + type + ".txt";
+		graphData = new RiskGraphData(type);
+	}
+
 	public void run() throws IOException {
 		createDir();
 		calRisk();
 		wrtSta();
+		RiskGraphData.riskDataMap.put(type, graphData);
 	}
+
 	protected abstract void initType();
+
 	protected abstract void calRisk() throws IOException;
 
 	public void createDir() {
 		new File(dirPath).mkdirs();
 	}
-
-	public RiskWriter() {
-		initPath();
-	}
-
-	public void initPath() {
-		initType();
-		dirPath = SysConf.riskOutPath + type + "/";
-		numFile = SysConf.staDir+"nums_"+type+".txt";
-		riskMthdFile = SysConf.staDir +"risk_m_"+type+".txt";
-	}
-
-
 
 	public void wrtSta() throws IOException {
 		PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(numFile)));
@@ -90,8 +74,6 @@ public abstract class RiskWriter {
 		}
 		printer.close();
 	}
-
-
 
 	public void wrtHostCall(PrintWriter printer, String hostMthd) {
 		Set<String> inMthds = SysInfo.getMthd(hostMthd).getInMthds();
@@ -117,6 +99,5 @@ public abstract class RiskWriter {
 		}
 		return outFile;
 	}
-
 
 }

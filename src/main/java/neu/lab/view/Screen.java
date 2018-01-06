@@ -28,14 +28,15 @@ import org.apache.log4j.Logger;
 
 import neu.lab.SysProcessor;
 import neu.lab.sta.SysJarSta;
-import neu.lab.view.tab.cls.ClsPanel;
+import neu.lab.view.tab.cls.ClsTab;
 import neu.lab.view.tab.mthd.MthdPanel;
+import neu.lab.view.tab.scatter.ChartTab;
 import neu.lab.view.tab.sta.JarStaPanel;
 import prefuse.util.FontLib;
 import prefuse.util.ui.JFastLabel;
 
 public class Screen {
-	private static Logger logger = Logger.getRootLogger(); 
+	private static Logger logger = Logger.getRootLogger();
 	private static Screen instance = new Screen();
 
 	public static Screen i() {
@@ -48,9 +49,10 @@ public class Screen {
 
 	JTabbedPane tabPane;
 
-	ClsPanel clsPanel;// 类为节点的tab页
-	 MthdPanel mthdPanel;// 方法为节点的tab页
+	ClsTab clsPanel;// 类为节点的tab页
+	MthdPanel mthdPanel;// 方法为节点的tab页
 	JarStaPanel jarStaPanel;// jar包的统计信息
+	ChartTab scatterPanel;
 
 	private JFastLabel jLabel;// 下方用于显示Label
 	private Box box;
@@ -67,7 +69,7 @@ public class Screen {
 
 	public void initJFrame() {
 		frame = new JFrame("Code Analysis");
-		ImageIcon icon=new ImageIcon("src\\main\\resources\\icon.png");
+		ImageIcon icon = new ImageIcon("src\\main\\resources\\icon.png");
 		frame.setIconImage(icon.getImage());
 
 		initMenu();
@@ -94,7 +96,7 @@ public class Screen {
 				int returnVal = jfc.showOpenDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File f = jfc.getSelectedFile();// f为选择到的目录
-					logger.debug("selected dir:"+f.getAbsolutePath());
+					logger.debug("selected dir:" + f.getAbsolutePath());
 					// ProBarDialog dialog = new ProBarDialog(frame);
 					updateLabel("程序加载中...");
 					SwingUtilities.invokeLater(new SysProcessor(f.getAbsolutePath()));
@@ -116,7 +118,7 @@ public class Screen {
 	public void setTabPanel() {
 		this.tabPane = new JTabbedPane();
 
-		clsPanel = new ClsPanel(this);
+		clsPanel = new ClsTab(this);
 		tabPane.addTab("cls", null, clsPanel, null);
 
 		// mthdPanel = new MthdPanel(this);
@@ -124,6 +126,10 @@ public class Screen {
 
 		jarStaPanel = new JarStaPanel(SysJarSta.i().hostSta, SysJarSta.i().jarStas.values());
 		tabPane.addTab("jarSta", jarStaPanel);
+		
+		scatterPanel = new ChartTab();
+		tabPane.addTab("scatter", scatterPanel);
+		
 		panel.add(tabPane, BorderLayout.CENTER);
 		frame.pack();
 	}
@@ -148,6 +154,7 @@ public class Screen {
 	public void updateLabel(String label) {
 		jLabel.setText(label);
 	}
+
 	public void updateMthdTab(String mthdName) {
 		mthdPanel.showMthdDisplay(mthdName);
 	}
