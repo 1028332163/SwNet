@@ -10,47 +10,34 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class RiskGraphData {
-	public static Map<String, RiskGraphData> riskDataMap = new HashMap<String, RiskGraphData>();
+	private static Map<String, RiskGraphData> riskDataMap = new HashMap<String, RiskGraphData>();
+
+	public static void addRiskData(String riskType, RiskGraphData data) {
+		RiskGraphData.riskDataMap.put(riskType, data);
+	}
+
+	public static RiskGraphData getRiskData(String riskType) {
+		return riskDataMap.get(riskType);
+	}
+
 	private static int maxRiskNum = 100;
 	private String riskType;
 	private int count;// 一共有多少条数据
 	private int recT;// recommendation threshold 推荐阈值
 	private TreeMap<Integer, Set<String>> num2sig;
 
+//	/**
+//	 * @return 直方图的区间个数
+//	 */
+//	public int intervalNum() {
+//		return num2sig.size();
+//	}
+
 	public RiskGraphData(String riskType) {
 		this.riskType = riskType;
 		count = 0;
 		num2sig = new TreeMap<Integer, Set<String>>();
 		recT = -1;
-	}
-
-	public double[][] getScatterData() {
-		List<Integer> riskNums = new ArrayList<Integer>();
-		for (Integer riskNum : num2sig.keySet()) {
-			for (String sig : num2sig.get(riskNum)) {
-				riskNums.add(riskNum);
-			}
-		}
-		double[][] result = new double[2][riskNums.size()];
-		for (int i = 0; i < riskNums.size(); i++) {
-			result[0][i] = (double) i;// x
-			result[1][i] = (double) riskNums.get(i);// y
-		}
-		return result;
-	}
-
-	public double[] getHistData() {
-		List<Integer> riskNums = new ArrayList<Integer>();
-		for (Integer riskNum : num2sig.keySet()) {
-			for (String sig : num2sig.get(riskNum)) {
-				riskNums.add(riskNum);
-			}
-		}
-		double[] result = new double[riskNums.size()];
-		for (int i = 0; i < riskNums.size(); i++) {
-			result[i] = (double) riskNums.get(i);// y
-		}
-		return result;
 	}
 
 	public void addNum(String sig, Integer num) {
@@ -87,4 +74,52 @@ public class RiskGraphData {
 		}
 		return recT;
 	}
+	/**画折线图的数据
+	 * @return
+	 */
+	public double[][] getLineData() {
+		double[][] result = new double[2][num2sig.size()];
+		int index = 0;
+		for (Integer x:num2sig.keySet()) {
+			result[0][index] = (double) x;// x
+			result[1][index] = (double) num2sig.get(x).size();// y
+			index++;
+		}
+		return result;
+	}
+	/**画散点图的数据
+	 * @return
+	 */
+	public double[][] getScatterData() {
+		List<Integer> riskNums = new ArrayList<Integer>();
+		for (Integer riskNum : num2sig.keySet()) {
+			for (String sig : num2sig.get(riskNum)) {
+				riskNums.add(riskNum);
+			}
+		}
+		double[][] result = new double[2][riskNums.size()];
+		for (int i = 0; i < riskNums.size(); i++) {
+			result[0][i] = (double) i;// x
+			result[1][i] = (double) riskNums.get(i);// y
+		}
+		return result;
+	}
+
+	/**画直方图的数据
+	 * @return
+	 */
+	public double[] getHistData() {
+		List<Integer> riskNums = new ArrayList<Integer>();
+		for (Integer riskNum : num2sig.keySet()) {
+			for (String sig : num2sig.get(riskNum)) {
+				riskNums.add(riskNum);
+			}
+		}
+		double[] result = new double[riskNums.size()];
+		for (int i = 0; i < riskNums.size(); i++) {
+			result[i] = (double) riskNums.get(i);// y
+		}
+		return result;
+	}
+	
 }

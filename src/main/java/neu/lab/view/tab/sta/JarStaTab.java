@@ -29,7 +29,7 @@ import neu.lab.view.Screen;
 import neu.lab.view.ViewCons;
 import neu.lab.view.listener.MouseInOutListener;
 
-public class JarStaPanel extends JPanel {
+public class JarStaTab extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	JPanel ckBoxsP;
@@ -40,7 +40,7 @@ public class JarStaPanel extends JPanel {
 	List<TableColumn> clsColumns;
 	List<TableColumn> mthdColumns;
 
-	public JarStaPanel(HostSta hostSta, Collection<LibSta> jarStas) {
+	public JarStaTab(HostSta hostSta, Collection<LibSta> jarStas) {
 		super();
 		initTableP(hostSta, jarStas);
 		initCkboxP();

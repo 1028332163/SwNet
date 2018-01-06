@@ -1,58 +1,127 @@
 package neu.lab.view.tab.scatter;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-import javax.swing.JList;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYBarPainter;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 
 import neu.lab.risk.RiskGraphData;
+import neu.lab.view.ViewCons;
 
 public class ChartTab extends JPanel {
-	public static String[] types = { "dir_lm", "acs" };
+	private static Logger logger = Logger.getRootLogger();
+	private static String firstRisk = "dir_lm";
+	public static String[] riskTypes = { firstRisk, "acs_lm" };
 	private ChartPanel chartP;
-	private JList<String> typeList;
+	private JPanel radioP;
 
 	public ChartTab() {
-		typeList = new JList<String>(types);
-		initScatterChart();
-		initHistograph();
+		this.setLayout(new BorderLayout());
+
+		initChartPanel();
 		this.add(chartP, BorderLayout.CENTER);
-		this.add(typeList, BorderLayout.WEST);
+
+		initRadioP();
+		this.add(radioP, BorderLayout.EAST);
 	}
 
-	private void initHistograph() {
-		// TODO Auto-generated method stub
-		
+	private void initRadioP() {
+		ButtonGroup bg = new ButtonGroup();
+		radioP = new JPanel();
+		radioP.setLayout(new BorderLayout());
+		Box yBox = Box.createVerticalBox();
+		for (String riskType : riskTypes) {
+			JRadioButton radio = new JRadioButton(riskType);
+			radio.setFont(radio.getFont().deriveFont((float) 18.0));
+			if (firstRisk.equals(riskType))
+				radio.setSelected(true);
+			radio.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					JRadioButton radio = (JRadioButton) e.getItem();
+					if (radio.isSelected()) {
+						showChart(radio.getText());
+					}
+				}
+			});
+
+			bg.add(radio);
+			yBox.add(radio);
+		}
+		radioP.add(yBox);
+		radioP.setPreferredSize(new Dimension(ViewCons.RISK_SEL_W, 0));
 	}
 
-	private void initScatterChart() {
+	private void showChart(String riskType) {
+		chartP.setChart(getChart(riskType));
+	}
+
+	private void initChartPanel() {
+		// 初始化panel
+		chartP = new ChartPanel(getChart(firstRisk));
+		chartP.setMouseWheelEnabled(true);
+		chartP.setLayout(new BorderLayout());
+	}
+
+	private JFreeChart getChart(String riskType) {
+		return getHistChart(riskType);
+	}
+
+	private JFreeChart getLineChart(String riskType) {
 		// 获取数据
 		DefaultXYDataset xydataset = new DefaultXYDataset();
-		xydataset.addSeries("dir_lm", RiskGraphData.riskDataMap.get("dir_lm").getScatterData());
+		xydataset.addSeries(riskType, RiskGraphData.getRiskData(riskType).getLineData());
 		// 初始化chart
-		JFreeChart localJFreeChart = ChartFactory.createScatterPlot("Scatter Plot Demo 3", "X", "Y", xydataset,
+		JFreeChart localJFreeChart = ChartFactory.createXYLineChart("Line Chart Demo 2", "X", "Y", xydataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		XYPlot localXYPlot = (XYPlot) localJFreeChart.getPlot();
-		localXYPlot.setDomainCrosshairVisible(true);
-		localXYPlot.setDomainCrosshairLockedOnData(true);
-		localXYPlot.setRangeCrosshairVisible(true);
-		localXYPlot.setRangeCrosshairLockedOnData(true);
-		localXYPlot.setDomainZeroBaselineVisible(true);
-		localXYPlot.setRangeZeroBaselineVisible(true);
 		localXYPlot.setDomainPannable(true);
 		localXYPlot.setRangePannable(true);
-		NumberAxis localNumberAxis = (NumberAxis) localXYPlot.getDomainAxis();
-		localNumberAxis.setAutoRangeIncludesZero(false);
-		// 初始化panel
-		chartP = new ChartPanel(localJFreeChart);
-		chartP.setMouseWheelEnabled(true);
+		XYLineAndShapeRenderer localXYLineAndShapeRenderer = (XYLineAndShapeRenderer) localXYPlot.getRenderer();
+		localXYLineAndShapeRenderer.setBaseShapesVisible(true);
+		localXYLineAndShapeRenderer.setBaseShapesFilled(true);
+		NumberAxis localNumberAxis = (NumberAxis) localXYPlot.getRangeAxis();
+		localNumberAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		return localJFreeChart;
 	}
+	
+	private JFreeChart getHistChart(String riskType) {
+		int intervalNum = 20;
+		// 获取数据
+		HistogramDataset dataset = new HistogramDataset();
+		dataset.addSeries(riskType, RiskGraphData.getRiskData(riskType).getHistData(),intervalNum);
+		// 初始化chart
+	    JFreeChart localJFreeChart = ChartFactory.createHistogram("Histogram Demo 1", null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+	    XYPlot localXYPlot = (XYPlot)localJFreeChart.getPlot();
+	    localXYPlot.setDomainPannable(true);
+	    localXYPlot.setRangePannable(true);
+	    localXYPlot.setForegroundAlpha(0.85F);
+	    NumberAxis localNumberAxis = (NumberAxis)localXYPlot.getRangeAxis();
+	    localNumberAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	    XYBarRenderer localXYBarRenderer = (XYBarRenderer)localXYPlot.getRenderer();
+	    localXYBarRenderer.setDrawBarOutline(false);
+	    localXYBarRenderer.setBarPainter(new StandardXYBarPainter());
+	    localXYBarRenderer.setShadowVisible(false);
+	    return localJFreeChart;
+	}
+
 }

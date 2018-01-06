@@ -51,7 +51,7 @@ public abstract class RiskWriter {
 		createDir();
 		calRisk();
 		wrtSta();
-		RiskGraphData.riskDataMap.put(type, graphData);
+		RiskGraphData.addRiskData(type, graphData);
 	}
 
 	protected abstract void initType();

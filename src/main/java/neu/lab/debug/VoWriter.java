@@ -1,4 +1,4 @@
-package neu.lab.core;
+package neu.lab.debug;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
+import neu.lab.core.SysInfo;
 import neu.lab.vo.Relation;
 
 public class VoWriter {

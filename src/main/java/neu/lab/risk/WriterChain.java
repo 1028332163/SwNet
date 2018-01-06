@@ -14,7 +14,7 @@ public class WriterChain {
 //		writers.add(new McPlWriter());
 //		writers.add(new InHmWriter());
 		writers.add(new DirLmWriter());
-//		writers.add(new AcsLmWriter());
+		writers.add(new AcsLmWriter());
 //		writers.add(new KCoreWriter());
 //		writers.add(new HitsWriter());
 	}

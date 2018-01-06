@@ -1,7 +1,7 @@
 package neu.lab;
 
 public class SysConf {
-	public static final boolean FLT_M_Rlt = false;// filte method relation是否要对方法的关系进行过滤
+	public static final boolean FLT_M_Rlt = true;// filte method relation是否要对方法的关系进行过滤
 	
 	public static final int DANGER_NUM = 1;//outMthds大于此数值时才会进行过滤
 	public static final boolean FLT_OBJ = true;//是否过滤对Object类复写的方法

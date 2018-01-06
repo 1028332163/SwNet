@@ -48,11 +48,9 @@ public class ClsDisplay extends Display {
 		super(new Visualization());
 		this.screen = screen;
 
-		// this.setPreferredSize(new Dimension(Cons.WIDTH - Cons.PCK_SEL_W,
-		// Cons.HEIGHT));
 		this.setMinimumSize(new Dimension(ViewCons.FRAME_W - ViewCons.PCK_SEL_W, 0));
 		// this.pan((Cons.WIDTH - Cons.PCK_SEL_W)/2, Cons.HEIGHT/2);
-		this.pan(400, 350);
+		this.pan(400, 350);//设置图的中心
 
 		initClsG();
 		m_vis.add(ViewCons.CLS_G, this.clsG);

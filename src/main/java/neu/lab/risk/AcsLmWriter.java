@@ -31,6 +31,7 @@ public class AcsLmWriter extends RiskWriter {
 			}
 
 			nums.add("" + acsLibMs.size());
+			graphData.addNum(hostM, acsLibMs.size());
 			if (acsLibMs.size() > SysConf.ACS_LM_T) {
 				riskMthds.add(hostM);
 				wrtEachM(hostM, acsLibMs);
@@ -39,14 +40,14 @@ public class AcsLmWriter extends RiskWriter {
 	}
 
 	private void wrtEachM(String hostM, Set<String> acsLibMs) throws IOException {
-		PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(getWrtFile(dirPath, hostM))));
-		printer.println(hostM);
-		this.wrtHostCall(printer, hostM);
-		printer.println(acsLibMs.size() + " access lib-method");
-		for (String libOut : acsLibMs) {
-			printer.println(libOut);
-		}
-		printer.close();
+//		PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(getWrtFile(dirPath, hostM))));
+//		printer.println(hostM);
+//		this.wrtHostCall(printer, hostM);
+//		printer.println(acsLibMs.size() + " access lib-method");
+//		for (String libOut : acsLibMs) {
+//			printer.println(libOut);
+//		}
+//		printer.close();
 	}
 
 }

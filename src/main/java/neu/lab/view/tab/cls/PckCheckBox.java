@@ -13,7 +13,6 @@ public class PckCheckBox extends JCheckBox {
 	public PckCheckBox(String name, final ClsDisplay clsDisplay) {
 		super(name);
 		this.setSelected(true);
-//		this.setPreferredSize(new Dimension(Cons.PCK_SEL_W,0));
 		Font f = this.getFont();
 		this.setFont(f.deriveFont((float) 18.0));
 		this.addItemListener(new ItemListener() {

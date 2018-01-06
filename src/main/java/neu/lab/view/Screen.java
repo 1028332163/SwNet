@@ -31,7 +31,7 @@ import neu.lab.sta.SysJarSta;
 import neu.lab.view.tab.cls.ClsTab;
 import neu.lab.view.tab.mthd.MthdPanel;
 import neu.lab.view.tab.scatter.ChartTab;
-import neu.lab.view.tab.sta.JarStaPanel;
+import neu.lab.view.tab.sta.JarStaTab;
 import prefuse.util.FontLib;
 import prefuse.util.ui.JFastLabel;
 
@@ -51,7 +51,7 @@ public class Screen {
 
 	ClsTab clsPanel;// 类为节点的tab页
 	MthdPanel mthdPanel;// 方法为节点的tab页
-	JarStaPanel jarStaPanel;// jar包的统计信息
+	JarStaTab jarStaPanel;// jar包的统计信息
 	ChartTab scatterPanel;
 
 	private JFastLabel jLabel;// 下方用于显示Label
@@ -62,7 +62,7 @@ public class Screen {
 	}
 
 	public void show() {
-		SwingUtilities.invokeLater(new SysProcessor("D:\\cWsFile\\projectLib\\cmpTest"));
+		SwingUtilities.invokeLater(new SysProcessor("D:\\cWsFile\\projectLib\\mavenE"));
 		frame.pack();
 		frame.setVisible(true); // show the window
 	}
@@ -124,7 +124,7 @@ public class Screen {
 		// mthdPanel = new MthdPanel(this);
 		// tabPane.addTab("mthd", mthdPanel);
 
-		jarStaPanel = new JarStaPanel(SysJarSta.i().hostSta, SysJarSta.i().jarStas.values());
+		jarStaPanel = new JarStaTab(SysJarSta.i().hostSta, SysJarSta.i().jarStas.values());
 		tabPane.addTab("jarSta", jarStaPanel);
 		
 		scatterPanel = new ChartTab();

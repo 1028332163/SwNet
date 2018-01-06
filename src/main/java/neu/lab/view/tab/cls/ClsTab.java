@@ -8,6 +8,7 @@ import neu.lab.core.SysInfo;
 import neu.lab.view.Screen;
 import neu.lab.view.ViewCons;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
@@ -19,24 +20,27 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 
-public class ClsTab extends JSplitPane {
+public class ClsTab extends JPanel {
 	Screen screen;
 	ClsDisplay clsDisplay;
 	JScrollPane pckCheckPanel;
+
 	/**
 	 * Create the panel.
 	 */
 	public ClsTab(Screen screen) {
 		super();
 		this.screen = screen;
+		this.setLayout(new BorderLayout());
 		clsDisplay = new ClsDisplay(screen);
-		this.setLeftComponent(clsDisplay);
+		this.add(clsDisplay, BorderLayout.CENTER);
 
 		pckCheckPanel = new JScrollPane();
-		pckCheckPanel.setPreferredSize(new Dimension(ViewCons.PCK_SEL_W,0));
+		pckCheckPanel.setPreferredSize(new Dimension(ViewCons.PCK_SEL_W, 0));
 		this.setPckCheckBox();
-		this.setRightComponent(pckCheckPanel);
+		this.add(pckCheckPanel, BorderLayout.EAST);
 	}
+
 	public void initView() {
 
 	}
