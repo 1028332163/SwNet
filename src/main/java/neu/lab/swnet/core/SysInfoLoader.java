@@ -28,7 +28,7 @@ public class SysInfoLoader {
 
 		String srcPath = path + "\\src";
 		String binPath = path + "\\bin";
-
+  
 		List<String> argsList = ArgUtil.getArgs(binPath);
 		SysInfo sysInfo = new SysInfo();
 		PackManager.v().getPack("wjtp").add(new Transform("wjtp.myTrans", new PtTransformer(sysInfo)));

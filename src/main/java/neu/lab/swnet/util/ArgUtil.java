@@ -59,6 +59,9 @@ public class ArgUtil {
 	}
 
 	private static void addCgArg(List<String> argsList) {
+		if(SysConf.CG_TYPE.equals("off")) {
+			argsList.addAll(Arrays.asList(new String[] { "-p", "cg", "off", }));
+		}else
 		if (SysConf.CG_TYPE.equals("cha")) {
 			argsList.addAll(Arrays.asList(new String[] { "-p", "cg", "all-reachable:true", }));// 对所有的appclass进行调用分析
 			argsList.addAll(Arrays.asList(new String[] { "-p", "cg.cha", "apponly:true", }));

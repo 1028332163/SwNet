@@ -51,15 +51,19 @@ public class BorderBuilder {
 			sysInfo.addJar(jarVO.getJarSig(), jarVO);
 			Set<String> pckClses = Detective.findJarCls(jarVO.getJarPath());
 			for (String clsPath : pckClses) {
+				try {
+					String pckName = NameManager.entry2pck(clsPath);
+					String pckSig = PackageVO.getSig(jarVO.getJarSig(), pckName);
+					String clsSig = pckName + "." + NameManager.entry2cls(clsPath);
 
-				String pckName = NameManager.entry2pck(clsPath);
-				String pckSig = PackageVO.getSig(jarVO.getJarSig(), pckName);
-				String clsSig = pckName + "." + NameManager.entry2cls(clsPath);
+					sysInfo.addPck(pckSig);
 
-				sysInfo.addPck(pckSig);
-
-				sysInfo.cls2pck(clsSig, pckSig);
-				sysInfo.pck2jar(pckSig, jarVO);
+					sysInfo.cls2pck(clsSig, pckSig);
+					sysInfo.pck2jar(pckSig, jarVO);
+				} catch (Exception e) {
+					System.out.println("can't extra package from: "+clsPath);
+					e.printStackTrace();
+				}
 			}
 		}
 		// 处理src代码和jar包重叠的包
@@ -78,16 +82,17 @@ public class BorderBuilder {
 				while (ite.hasNext()) {
 					String libPckSig = ite.next();
 					PackageVO libPckVO = sysInfo.getPck(libPckSig);
-					String inPckSig = PackageVO.getSig(SysCons.MY_JAR_NAME, libPckVO.getPckName());
-					PackageVO inPck = sysInfo.getPck(inPckSig);
-					if (inPck == null) {// src源码中没有相同包名
+					String hostPckSig = PackageVO.getSig(SysCons.MY_JAR_NAME, libPckVO.getPckName());
+					PackageVO hostPck = sysInfo.getPck(hostPckSig);
+					if (hostPck == null) {// src源码中没有相同包名
 						continue;
 					} else {
-						Set<String> inClses = inPck.getClses();
+						Set<String> hostClses = hostPck.getClses();
 						Set<String> libClses = libPckVO.getClses();
 						boolean isSame = false;
-						for (String cls : inClses) {
-							if (libClses.contains(cls)) {// 真正的第三方中不会存在src中的类，所以只要有一个重叠就可以视为一样
+						for (String hostCls : hostClses) {
+							if (libClses.contains(hostCls)) {// 真正的第三方中不会存在src中的类，所以只要有一个重叠就可以视为一样
+								System.out.println(libPckSig + " was melt because " + " " + hostCls);
 								isSame = true;
 								break;
 							}
@@ -95,7 +100,7 @@ public class BorderBuilder {
 						if (isSame) {
 							// 将libPck的信息复制到inPck
 							for (String clsSig : libClses) {
-								sysInfo.cls2pck(clsSig, inPckSig);
+								sysInfo.cls2pck(clsSig, hostPckSig);
 							}
 							// 从jarVO移除pck
 							ite.remove();

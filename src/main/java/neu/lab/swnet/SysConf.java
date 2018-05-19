@@ -31,6 +31,6 @@ public class SysConf {
 	public static final String riskOutPath = "risk/";
 	public static final String staDir = riskOutPath + "aSta/";
 	
-	public static final String CG_TYPE = "cha";//计算cg的方式：cha/spark
+	public static final String CG_TYPE = "off";//计算cg的方式：off/cha/spark
 	
 }

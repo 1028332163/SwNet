@@ -59,28 +59,30 @@ public class PtTransformer extends SceneTransformer {
 				}
 			}
 		}
-
-		CallGraph cg = Scene.v().getCallGraph();
-		// 将call graph存储到methodVo中
-		for (SootMethod sootMethod : methods) {
-			// 设置outMthds、inMthds
-			Set<String> outMthds = new HashSet<String>();
-			Iterator<Edge> outIte = cg.edgesOutOf(sootMethod);
-			while (outIte.hasNext()) {
-				Edge edge = outIte.next();
-				if (!neu.lab.swnet.core.SysUtil.isJdkCls(edge.tgt().getDeclaringClass().getName())) {
-					String src = sootMethod.getSignature();
-					String tgt = edge.tgt().getSignature();
-					outMthds.add(tgt);
-					// 添加类之间的关系
-					MethodVO srcMthdVO = sysInfo.getMthd(src);
-					MethodVO tgtMthdVO = sysInfo.getMthd(tgt);
-					if (null != srcMthdVO && null != tgtMthdVO) {
-						srcMthdVO.addOutMthds(tgt);
+		if (!SysConf.CG_TYPE.equals("off")) {
+			CallGraph cg = Scene.v().getCallGraph();
+			// 将call graph存储到methodVo中
+			for (SootMethod sootMethod : methods) {
+				// 设置outMthds、inMthds
+				Set<String> outMthds = new HashSet<String>();
+				Iterator<Edge> outIte = cg.edgesOutOf(sootMethod);
+				while (outIte.hasNext()) {
+					Edge edge = outIte.next();
+					if (!neu.lab.swnet.core.SysUtil.isJdkCls(edge.tgt().getDeclaringClass().getName())) {
+						String src = sootMethod.getSignature();
+						String tgt = edge.tgt().getSignature();
+						outMthds.add(tgt);
+						// 添加类之间的关系
+						MethodVO srcMthdVO = sysInfo.getMthd(src);
+						MethodVO tgtMthdVO = sysInfo.getMthd(tgt);
+						if (null != srcMthdVO && null != tgtMthdVO) {
+							srcMthdVO.addOutMthds(tgt);
+						}
 					}
 				}
 			}
 		}
+
 		// 生成field的关系
 		for (SootField sootField : fields) {
 			String typeString = neu.lab.swnet.core.SysUtil.type2string(sootField.getType());

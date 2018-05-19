@@ -19,7 +19,7 @@ import soot.G;
 
 public class CodeAnaMain {
 	private static Logger logger = Logger.getRootLogger();
-	public static String proPath = "D:\\cWsFile\\projectLib\\fop";
+	public static String proPath = "D:\\cTestWs\\jmeter";
 
 	public static void main(String[] args) {
 		long startT = System.currentTimeMillis();

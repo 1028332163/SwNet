@@ -66,6 +66,7 @@ public class NameManager {
 	 * @return javax.activation
 	 */
 	public static String entry2pck(String entryName) {
+		
 		return entryName.substring(0, entryName.lastIndexOf("/")).replace("/", ".");
 	}
 
